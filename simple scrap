@@ -1,0 +1,27 @@
+These below lines are containg the info related to scraping atozmp3.info wesite.
+
+I did this under simple scrapy shell command:
+command : scrapy shell "http://atozmp3.info/category/telugu/"
+it'll creates response variable and we need to perform below operations on the particuulr variable.
+
+Here every thing done with the help of css only.
+Imp:
+    -> if something is class name it should start with . symbol
+    -> if it is a tag update them in hierarchial manner
+       ex: .entry p strong span::text
+            entry is a class, under this p is a tag, under this strong is one momre tag,
+            under this span is one more tag, to fetch text from that tag use text.
+    -> use extract method to avoid the tags in output.
+    -> In a particular tag, if there is more than one variable, use attr method to get the
+       valure of the particular symbol.
+       Ex: 
+          .post-title a:attr(title)
+          from post-title class under a tag fetch the value of the title attribute.
+
+<=====================================================================>
+for out in response.css('.post'):
+    print "Movie :", out.css('.post-title a::attr(title)')[0].extract()
+    for i in out.css('.entry p strong span::text').extract():
+        print i
+    print '*' * 20
+<=====================================================================>
