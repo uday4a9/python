@@ -1,1 +1,5 @@
+This file strictly allowed to run in python version, Which are supporting for unicode data support.
+Ex : python3.x
 
+for i in range(3077, 3150):
+	print (chr(i), end=" ")
