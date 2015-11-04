@@ -14,6 +14,7 @@ class StackOverflowSpider(scrapy.Spider):
             yield scrapy.Request(full_url, callback=self.parse_question)
 
     def parse_question(self, response):
+        print "MYRESPONSE :", response
         yield {
             'title': response.css('h1 a::text').extract()[0],
             'votes': response.css('.question .vote-count-post::text').extract()[0],
