@@ -1,6 +1,7 @@
 #! /usr/bin/env /usr/bin/python
 
 import sys
+import os
 
 def tracer1(frame, event, args):
     #print dir(frame)
@@ -33,6 +34,15 @@ def trace_exceptions(frame, event, arg):
     line_no = frame.f_lineno
     filename = co.co_filename
     exc_type, exc_value, exc_traceback = arg
+    #print os.getcwd()
+    #print filename, os.path.realpath(filename)
+    #print os.path.dirname(filename)
+    if os.getcwd() not in os.path.realpath(filename):
+        # if the file is in current directory then only,
+	#handle the exception otherwise never touch any
+	# THis can be avoiding if there is any exceptio hnadling in
+	# default file in python
+        return
     print 'Exception : %s occured in %s file at line no %s' % \
         (exc_type.__name__, filename, line_no)
 #    print 'Tracing exception: %s "%s" on line %s of %s' % \
