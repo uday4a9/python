@@ -9,11 +9,17 @@ from pprint import pprint
 import argparse
 import sqlite3
 import getpass
+import subprocess
+
+svnremote = "svn export http://tblubttrs01apdvg.tdc.vzwcorp.com:1080/svn/EnvironmentSpecificConfigs/branches/%s/Prod/%s/config.ini"
+svnlocal = "/usagebrkr/%s/mz/config.ini"
 
 
-def configdiffer(fromfile, tofile, db):
+def configdiffer(Dict):
 #    lines1 = open(sys.argv[1], 'r').readlines()
 #    lines2 = open(sys.argv[2], 'r').readlines()
+    fromfile = svnlocal%(Dict['datacenter'])
+    tofile = pull(Dict)
     fromdate = time.ctime(os.stat(fromfile).st_mtime)
     todate = time.ctime(os.stat(tofile).st_mtime)
     fromlines = open(fromfile, 'U').readlines()
@@ -41,8 +47,8 @@ def configdiffer(fromfile, tofile, db):
     else:
 	stamp = time.strftime("%d %b %Y %H:%M:%S")
 	diff = ''.join(diff)
-	os.system('cp %s .'%(tofile))
-	print "Local config file replaceed with rmeote svn config file"
+	subprocess.call('cp %s %s'%(tofile, fromfile), shell=True)
+	print "Local config file replaced with remote svn config file"
 
     # Create DB if not avaiable
     if not os.path.isfile(db):
@@ -72,22 +78,29 @@ def configdiffer(fromfile, tofile, db):
     #    if i[:1] == '-':
     #        print i.rstrip('\n')
 
+def pull(Dict):
+    """ pulling config.ini file form remote server for future comaprison """
+    subprocess.check_output(svnremote%(Dict['datacenter'], Dict['release']), shell=True)
+    return os.path.join(os.getcwd(), 'config.ini')
+
 def parser():
     """
        Parsing the data given from command line.
     """
-    parse = argparse.ArgumentParser(prog=sys.argv[0])
-    parse.add_argument('site_config', nargs=1, metavar=('site_config.ini'),
-                     help="pass the local config.ini file path")
-    parse.add_argument('remote_config', nargs=1, metavar=('svn_config.ini'),
-                     help="pass the svn config.ini file path")
-    parse.add_argument('-db','--database', nargs=1, required=False, 
-                     metavar=('exmpale.db'), default=["datacenter.db"],
-                     help="""pass the databse name to store the table if needed. 
-		     else, data will be written to datacenter.db""")
+    parse = argparse.ArgumentParser(prog=sys.argv[0], 
+                                   description = """ This program needs pasword authentication.
+				   so, please be attentive.""")
+    parse.add_argument('-rel', '--release', nargs=1, metavar=('release'), required=True,
+                     help="pass the release name to fetch the exact svn repo")
+    parse.add_argument('-dc', '--datacenter', nargs=1, metavar=('Data_center'), required=True,
+                     help="Pass the datacenter name, To fetch the svn config.ini")
+    parse.add_argument('-db','--database', nargs=1, required=True, metavar=('exmpale.db'),
+                     help='pass the databse name to store the diff table')
     args = parse.parse_args()
     Dict = vars(args)
-    configdiffer(Dict['site_config'][0], Dict['remote_config'][0], Dict['database'][0])
+    for key in Dict:
+        Dict[key] = Dict[key][0]
+    configdiffer(Dict)
 
 if __name__ == '__main__':
     parser()
