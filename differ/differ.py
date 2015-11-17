@@ -11,6 +11,10 @@ import sqlite3
 import getpass
 import subprocess
 
+import mydebug
+sys.settrace(mydebug.tracer)
+
+
 svnremote = "svn export http://tblubttrs01apdvg.tdc.vzwcorp.com:1080/svn/EnvironmentSpecificConfigs/branches/%s/Prod/%s/config.ini"
 svnlocal = "/usagebrkr/%s/mz/config.ini"
 
