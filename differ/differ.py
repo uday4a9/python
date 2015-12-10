@@ -84,7 +84,10 @@ def configdiffer(Dict):
 
 def pull(Dict):
     """ pulling config.ini file form remote server for future comaprison """
-    subprocess.check_output(svnremote%(Dict['datacenter'], Dict['release']), shell=True)
+    command = svnremote%(Dict['datacenter'], Dict['release'])
+    print command
+    subprocess.check_output(command, shell=True)
+    #subprocess.check_output(svnremote%(Dict['datacenter'], Dict['release']), shell=True)
     return os.path.join(os.getcwd(), 'config.ini')
 
 def parser():
