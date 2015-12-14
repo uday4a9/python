@@ -27,6 +27,11 @@ class Node(object):
 	'''
         return self._len 
 
+    def depth_first(self):
+        yield self
+        for entry in self:
+            #print("DEPTH_FIRST", entry)
+            yield from entry.depth_first()
 
 
 if __name__ == '__main__':
@@ -40,9 +45,15 @@ if __name__ == '__main__':
     root.add_child(left)
     root.add_child(right)
 
+    left.add_child(Node(3))
+    left.add_child(Node(4))
+    right.add_child(Node(5))
+
     print(root, "Contains :", len(root), "childs")
     # Here iterator protocol invokes and convert it to be handled
     # by for loop.
     for node in root:
         print(node, "contains :", len(node), "childs")
 
+    for child in root.depth_first():
+        print(child) 
