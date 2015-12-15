@@ -1,5 +1,7 @@
 #! /usr/bin/env /usr/bin/python3
 
+import pytest
+
 class NewIter(object):
     '''
      This class creates new iterator which have reverse iteration protocol.

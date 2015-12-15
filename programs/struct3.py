@@ -1,5 +1,7 @@
 #! /usr/bin/env /usr/bin/python3
 
+import pytest
+
 
 class Node(object):
     def __init__(self, value):
