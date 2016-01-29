@@ -24,11 +24,29 @@ def status():
 
 
 def average():
+    # Here, values is a mutable type, so we can easily extend the
+    # way of using in below inner function.
+    # If we are trying to use immutable variables like numbers, strings
+    # This type of code will not work.
+    # This mutable type values can be change dby using
+    # <average objecta>.__closure__[0].cell_contents
+    # can be modified... This can cause for changing the variables
     vals = []
     def inner_avg(val):
         vals.append(val)
         return sum(vals) / len(vals)
     return inner_avg
+
+def nlaverage():
+    # Here update the total directly instead of saving in a list
+    # This depicts the usage of nonlocal keyword in python
+    count = 0
+    total = 0
+
+    def inner_avg(val):
+        count += 1
+        total += val
+        return total / count
 
 class Average(object):
     def __init__(self):
@@ -56,6 +74,14 @@ if __name__ == '__main__':
     print("Callable obj:", cavg(11))
     print("Callable obj:", cavg(12))
 
+
+    print("")
+    navg = nlaverage()
+    print("non local Callable obj:", navg(10))
+    print("non local Callable obj:", navg(11))
+    print("non local Callable obj:", navg(12))
+
     print("\nTypes :")
     print("type(avg)  :", type(avg), avg)
     print("type(cavg) :", type(cavg), cavg)
+    print("type(navg) :", type(navg), navg)
