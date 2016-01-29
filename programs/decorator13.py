@@ -44,9 +44,11 @@ def nlaverage():
     total = 0
 
     def inner_avg(val):
+        nonlocal count, total
         count += 1
         total += val
         return total / count
+    return inner_avg
 
 class Average(object):
     def __init__(self):
