@@ -1,5 +1,10 @@
 #! /usr/bin/env /usr/bin/python
 
+import sys
+import os
+
+sys.path.append(os.getcwd())
+
 total = 2
 
 def final():
