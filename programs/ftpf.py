@@ -5,12 +5,14 @@ import ftplib
 import argparse
 import time
 import os
+import time
 
 total = 0
 def checker(block):
     # blocksize in bytes
     global  total
     total += 8192
+    print("call back invoked", time.time())
 
 
 def process(param):
