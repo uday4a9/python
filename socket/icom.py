@@ -3,6 +3,8 @@
 import socket
 import threading
 import select
+import pickle
+import sys
 
 
 class Socket(socket.socket):
@@ -10,23 +12,29 @@ class Socket(socket.socket):
         print("socket object created")
 
 def writer(conn):
-    while True:
-        msg = raw_input("Me : ")
-        conn.send(msg)
+    conn = socket.create_connection((sys.argv[1], sys.argv[2]))
+    # obtain the results to be sent
+    msg = pickle.dumps("Hello world")
+    #send the results to the client
+    conn.send(msg)
+    # Send the bye statement
+    msg = pickle.dumps("bye")
+    conn.send(msg)
 
 def messenger(conn):
-    threading.Thread(target=writer, args=(conn,)).start()
+    trd = threading.Thread(target=writer, args=(conn,))
+    trd.daemon = True
+    trd.start()
     while 1:
         ip, op, excp = select.select([conn], [conn], [])
-        if ip:
-            #conn.send(msg)
-            print("Sent")
+        data = ""
         if op:
             data = conn.recv(1024)
-            data = data.strip()
+            data = pickle.loads(data).strip()
             if data == "bye":
+                conn.close()
                 break
-            print("Cient : {0}".format(data.strip()))
+            print("\b" * 3 + "Cient : {0}".format(data.strip()))
     conn.close()
 
 
@@ -37,8 +45,9 @@ def main():
     print ("Server at {0}".format(sock.getsockname()))
 
     conn, addr = sock.accept()
-    print("Connected by address : {0}".format(conn))
+    print("Connected by address : {0}".format(addr))
     messenger(conn)
+    sock.close()
 
 if __name__ == '__main__':
     main()
