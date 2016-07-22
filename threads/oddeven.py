@@ -18,7 +18,8 @@ def eventhread():
             cond.notify(1)
             cond.release()
             break
-        print("EVEN :", val)
+        #print("EVEN :", val)
+        print(threading.currentThread().getName(), val)
         val += 1
         cond.notify(1)
         cond.release()
@@ -33,7 +34,8 @@ def oddthread():
             cond.notify(1)
             cond.release()
             break
-        print("ODD:", val)
+        #print("ODD:", val)
+        print(threading.currentThread().getName(), val)
         val += 1
         cond.notify(1)
         cond.release()
@@ -41,9 +43,12 @@ def oddthread():
 if __name__ == '__main__':
     threads = []
     targets = [eventhread, oddthread]
+    targets_name = ["eventhread", "oddthread"]
 
+    i = 0
     for tar in targets:
-        threads.append(threading.Thread(target=tar))
+        threads.append(threading.Thread(target=tar, name=targets_name[i]))
+        i += 1
 
     for thread in threads:
         thread.start()

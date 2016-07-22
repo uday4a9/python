@@ -15,5 +15,14 @@ def main():
     print("")
 
 
+def man():
+    sys.stdout.write('[  ')
+    while True:
+        for i in "-\|/-":
+            sys.stdout.write(i)
+            sys.stdout.write('\b')
+            sys.stdout.flush()
+            time.sleep(.03)
+
 if __name__ == '__main__':
-    main()
+    man()
