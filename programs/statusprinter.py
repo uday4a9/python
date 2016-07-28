@@ -6,12 +6,12 @@ import time
 def main():
     i = 0
     sys.stdout.write('[')
-    while i < 5:
+    while i < 255:
         i += 1
         sys.stdout.write('%]')
         sys.stdout.write('\b')
         sys.stdout.flush()
-        time.sleep(.5)
+        time.sleep(.3)
     print("")
 
 
