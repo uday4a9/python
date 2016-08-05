@@ -11,27 +11,26 @@ class Klass:
     def __init__(self, a=12, b=23):
         self.a = a
         self.b = b
-        self.dpc = True
+        self.dpc = True 
 
-    def dekor(func):
+    def dekor(self):
         print("in method dekor")
         def inner(*args, **kwargs):
             if not args[0].dpc:
                 print("DPC TRUE retruning func")
-                func(*args, **kwargs)
-                return
+                self(*args, **kwargs)
             else:
                 print("In klass decor method, process the results here")
                 #print(args, kwargs, func.__name__)
-                func(*args, **kwargs)
+                self(*args, **kwargs)
         return inner
 
     @dekor
-    def display(self):
-        print("In display method of klass")
+    def display(self, _val1, _val2):
+        print("In display method of klass", _val1, _val2)
     
 
 
 if __name__ == '__main__':
     obj = Klass()
-    obj.display()
+    obj.display(-12, -32)
