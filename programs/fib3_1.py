@@ -3,8 +3,8 @@
 def fib():
     x, y = 0, 1
     while True:
-        x, y = y, x + y
         yield x
+        x, y = y, x + y
 
 def gfib():
     yield from fib() 
