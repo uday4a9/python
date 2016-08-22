@@ -3,6 +3,11 @@
 """
     This program demonstrates how threading and sequential call works for
 CPU bound tasks.
+
+Ex:
+    ./performanceCPU.py sequentital 35 35
+    ./performanceCPU.py threading 35 35
+    ./performanceCPU.py processing 35 35
 """
 
 import urllib2

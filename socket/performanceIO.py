@@ -3,6 +3,11 @@
 """
     This program demonstrates how threading, processing and sequential call works for
 I/O bound tasks.
+
+Ex:
+    ./performancIO.py sequentital requests requests 
+    ./performanceIO.py threading requests requests
+    ./performanceIO.py processing requests requests
 """
 
 import urllib2
