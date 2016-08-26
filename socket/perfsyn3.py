@@ -4,7 +4,7 @@ from socket import *
 import sys
 import time
 
-from selectors import DefaultSelector, EVENT_WRITE
+from selectors import DefaultSelector, EVENT_WRITE, EVENT_READ
 
 selector = DefaultSelector()
 
@@ -26,13 +26,19 @@ def helper():
     # that leads to fail at following send (or) recv methods.
     # So, We need to choose them carefully with select call
 
-    selector.register(s.fileno(), EVENT_WRITE, callback)
+    callback = lambda: connected(conn)
+    selector.register(conn.fileno(), EVENT_WRITE, callback)
 
 
-
+def connected(conn):
+    print("Invoked conn")
     i, times = 0, 1
+    buf = ""
     while True:
-        buf = conn.recv(40)
+        try:
+            buf = conn.recv(40)
+        except BlockingIOError:
+            continue 
         if not buf:
             break
         #sys.stdout.write(buf.decode())
@@ -40,6 +46,12 @@ def helper():
 
 if __name__ == '__main__':
     start = time.time()
-    helper()
-    helper()
+    for _ in range(20):
+        helper()
+
+    events = selector.select()
+    for key, mask in events:
+        callback_fn = key.data
+        callback_fn()
+
     print("Took {0}secs".format(time.time() - start))
