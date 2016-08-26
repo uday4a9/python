@@ -9,10 +9,14 @@ from socket import *
 import time
 import threading
 
-def connectionserve(conn):
+def connectionserve(conn, addr):
     i = 0
     while i < 50:
-        conn.send("Hello world! ")
+        try:
+            conn.send("Hello world! ")
+        except Exception:
+            print("Connection reset : {0}".format(addr))
+            return
         time.sleep(0.02)
         i += 1
     conn.send("\n")
@@ -27,7 +31,7 @@ def server():
     while True:
         conn, addr = sock.accept()
         print("Connected by address : {0}".format(addr))
-        trd = threading.Thread(target=connectionserve, args=(conn,))
+        trd = threading.Thread(target=connectionserve, args=(conn, addr, ))
         trd.start()
 
 if __name__ == '__main__':
