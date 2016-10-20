@@ -23,4 +23,6 @@ Q3) count number of identical chars in a given string with with some special cas
     import collections
     print collections.Counter(s).most_common()[0][1]
 ----------------------------------------------------------------------------Q4) 
-
+Q4) validate an IPV4 address
+=>
+\b[1-2]?[0-9]?[0-9]\.[1-2]?[0-9]?[0-9]\.[1-2]?[0-9]?[0-9]\.[1-2]?[0-9]?[0-9]\b
