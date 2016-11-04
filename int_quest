@@ -26,3 +26,7 @@ Q3) count number of identical chars in a given string with with some special cas
 Q4) validate an IPV4 address
 =>
 \b[1-2]?[0-9]?[0-9]\.[1-2]?[0-9]?[0-9]\.[1-2]?[0-9]?[0-9]\.[1-2]?[0-9]?[0-9]\b
+----------------------------------------------------------------------------
+Q5) To print the prime numbers in given range using Fermat's little theorem
+=>
+    [i for i in range(2, 200) if((2**i - 2)%i == 0)]
