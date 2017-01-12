@@ -18,7 +18,7 @@ except Exception:
     sys.stderr.write("Problem with op file")
     sys.exit(1)
 
-class MyHTMLParser(HTMLParser):
+class AtoZMP3HTMLParser(HTMLParser):
     """
     Handling only start tags which have attribute are 3 only.
     """
@@ -31,11 +31,10 @@ class MyHTMLParser(HTMLParser):
             except KeyError as e:
                 logging.error(str(e) + " for " + str(attrs))
 
-
 if __name__ == '__main__':
-    parser = MyHTMLParser()
+    parser = AtoZMP3HTMLParser()
     start_timer = time.time()
-    for i in range(2):
+    for i in range(1, 166):
         URL = BASE_URL + BASE_EXT + str(i)
         before = time.time()
         content = requests.get(BASE_URL + BASE_EXT + str(i))
@@ -43,4 +42,5 @@ if __name__ == '__main__':
         logging.info(URL + " took "  + str(after - before) + "secs")
         parser.feed(content.text)
     end_timer = time.time()
+    logging.info(" Totally took "  + str(end_timer - start_timer) + "secs")
     
