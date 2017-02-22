@@ -5,6 +5,11 @@ import json
 from pprint import pprint
 
 def get_targetnode_in_json(d, node, path):
+    if node is None:
+        if not isinstance(d, abc.MutableSequence)\
+            and not isinstance(d, abc.Mapping):
+            print('.'.join(path), d, sep=" => ")
+
     if not isinstance(d, abc.Mapping):
         return
 
@@ -17,11 +22,17 @@ def get_targetnode_in_json(d, node, path):
         path.append(key)
         if isinstance(d[key], abc.Mapping):
             get_targetnode_in_json(d[key], node, path)
-        if isinstance(d[key], abc.MutableSequence):
-            for index in range(len(d[key])):
-                path.append(str(index))
-                get_targetnode_in_json(d[key][index], node, path)
-                path.pop()
+        elif isinstance(d[key], abc.MutableSequence):
+            if len(d[key]) == 0:
+                print('.'.join(path), d[key], sep=" => ")
+            else:
+                for index in range(len(d[key])):
+                    path.append(str(index))
+                    get_targetnode_in_json(d[key][index], node, path)
+                    path.pop()
+        else:
+            print('.'.join(path), d[key], sep=" => ")
+
         path.pop()
 
 def main(target_node=None):
@@ -33,4 +44,5 @@ def main(target_node=None):
 
 if __name__ == '__main__':
     #main(target_node="name")
-    main(target_node="fav")
+    #main(target_node="fav")
+    main()
