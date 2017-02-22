@@ -17,11 +17,41 @@
         "Q17437796"
       ]
     },
-    "enwiki": {
-      "site": "enwiki",
-      "title": "New York City",
-      "badges": []
-    },
+    "enwiki": [
+        {
+          "site": "enwiki",
+          "title": "New York City",
+          "badges": [
+              {
+            
+                "new" : {
+                    "title" : "hello world",
+                    "fav" : 12
+                },
+                "new1" : {
+                    "title" : "hello world1",
+                    "fav" : 134
+                }
+            }, 
+          {
+        
+            "new" : {
+                "title" : "hello world",
+                "fav" : 12
+            },
+            "new1" : {
+                "title" : "hello world1",
+                "fav" : 134
+            }
+          }
+          ]
+        },
+        {
+          "site": "enwiki",
+          "title": "Cikkole City",
+          "badges": ["Cikkole"]
+        }
+    ],
     "dewiki": {
       "site": "dewiki",
       "title": "New York City",
