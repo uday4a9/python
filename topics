@@ -1,0 +1,24 @@
+[{'dept': '001', 'qty': 100, 'sku': 'foo', 'transId': 'uniqueId1'},
+ {'dept': '001', 'qty': 200, 'sku': 'bar', 'transId': 'uniqueId2'},
+ {'dept': '001', 'qty': 300, 'sku': 'foo', 'transId': 'uniqueId3'},
+ {'dept': '002', 'qty': 400, 'sku': 'baz', 'transId': 'uniqueId4'},
+ {'dept': '002', 'qty': 500, 'sku': 'baz', 'transId': 'uniqueId5'},
+ {'dept': '002', 'qty': 600, 'sku': 'qux', 'transId': 'uniqueId6'},
+ {'dept': '003', 'qty': 700, 'sku': 'foo', 'transId': 'uniqueId7'}]
+
+===========>
+Groupby using itertools : First do the sirt and do groupby
+>>> pprint([(item[0], list(item[1])) for item in (groupby(sorted(input, key=itemgetter("dept","sku")), key=itemgetter("dept", "sku")))])
+[(('001', 'bar'),
+  [{'dept': '001', 'qty': 200, 'sku': 'bar', 'transId': 'uniqueId2'}]),
+ (('001', 'foo'),
+  [{'dept': '001', 'qty': 100, 'sku': 'foo', 'transId': 'uniqueId1'},
+   {'dept': '001', 'qty': 300, 'sku': 'foo', 'transId': 'uniqueId3'}]),
+ (('002', 'baz'),
+  [{'dept': '002', 'qty': 400, 'sku': 'baz', 'transId': 'uniqueId4'},
+   {'dept': '002', 'qty': 500, 'sku': 'baz', 'transId': 'uniqueId5'}]),
+ (('002', 'qux'),
+  [{'dept': '002', 'qty': 600, 'sku': 'qux', 'transId': 'uniqueId6'}]),
+ (('003', 'foo'),
+  [{'dept': '003', 'qty': 700, 'sku': 'foo', 'transId': 'uniqueId7'}])]
+
