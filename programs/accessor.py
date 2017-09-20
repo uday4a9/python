@@ -2,27 +2,31 @@ import collections
 
 class Accessor:
     def __init__(self, obj):
-#        if not isinstance(obj, dict):
-#            raise ValueError("pass dict object only")
-        self.__dict = obj
+        self.__iobj = obj
+    
+    def __repr__(self):
+        return "<{0}: {1}>".format(self.__class__.__name__,
+                                   hex(id(self)))
+
+    def __len__(self):
+        return len(self.__iobj)
+
+    def as_raw(self):
+        return self.__iobj
+
+    def __getitem__(self, ind):
+        return (self._Accessor__iobj[int(ind)])
 
     def __getattr__(self, key):
         try:
-            type_ = self._Accessor__dict[key]
+            type_ = self._Accessor__iobj[key]
         except KeyError:
            raise
         
         if isinstance(type_, collections.MutableSequence):
-            return (self._Accessor__dict[key])
-            #try:
-            #    index = int(key)
-            #    return Accessor(self._Accessor__dict[key])
-            #except Exception:
-            #    raise
-        elif isinstance(type_, collections.MutableMapping):
-            return Accessor(self._Accessor__dict[key])
-        else:
-            return self._Accessor__dict[key]
+            return Accessor([Accessor(item) 
+                             for item in self._Accessor__iobj[key]])
+        return Accessor(self._Accessor__iobj[key])
 
 
 if __name__ == '__main__':
@@ -31,5 +35,13 @@ if __name__ == '__main__':
                    "ad" : {"qwerty": 321,
                            "asdf" : 213
                     },
-                   "ip" : [12, 23, 34]
+                   "ip" : [12, 23, 34],
+                   "num" : [{"one": 1},
+                            {"two": 2},
+                            {"three": {
+                                "four":4
+                                }
+                            }
+                    ],
+                   "yes": "it is here"
                  })
