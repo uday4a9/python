@@ -8,10 +8,15 @@ class Accessor:
         return "<{0}: {1}>".format(self.__class__.__name__,
                                    hex(id(self)))
 
+    def __iter__(self):
+        return iter(self.__iobj)
+
     def __len__(self):
         return len(self.__iobj)
 
     def as_raw(self):
+        if isinstance(self.__iobj, collections.MutableSequence):
+            return [item.as_raw() for item in self.__iobj]
         return self.__iobj
 
     def __getitem__(self, ind):
@@ -45,3 +50,9 @@ if __name__ == '__main__':
                     ],
                    "yes": "it is here"
                  })
+    print(ac.hello)
+    print(ac.hello.as_raw())
+    print(ac.num)
+    print(ac.num.as_raw())
+    print(ac.num[-1].three.four)
+    print(ac.num[-1].three.four.as_raw())
