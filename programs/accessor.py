@@ -14,24 +14,55 @@ class Accessor:
     def __len__(self):
         return len(self.__iobj)
 
+    def __getitem__(self, ind):
+        return (self.__iobj[int(ind)])
+
+    def __getattr__(self, key):
+        try:
+            type_ = self.__iobj[key]
+        except KeyError:
+            raise
+        
+        if isinstance(type_, collections.MutableSequence):
+            return Accessor([Accessor(item) 
+                             for item in self.__iobj[key]])
+        return Accessor(self.__iobj[key])
+    
+    @classmethod
+    def raw_obj_traverser(cls, _obj, path="obj"):
+        if not path.startswith("obj"):
+            raise Exception("please start it with `obj`")
+        obj = cls(_obj)
+        return eval(path)
+    
+    @staticmethod
+    def klass_obj_traverser(klsobj, path="obj"):
+        if not isinstance(klsobj, Accessor):
+            raise ValueError("First argument should be of `Accessor` instance type")
+        
+        if not path.startswith("obj"):
+            raise Exception("please start it with `obj`")
+        obj = klsobj
+        return eval(path)
+
     def as_raw(self):
         if isinstance(self.__iobj, collections.MutableSequence):
             return [item.as_raw() for item in self.__iobj]
         return self.__iobj
-
-    def __getitem__(self, ind):
-        return (self._Accessor__iobj[int(ind)])
-
-    def __getattr__(self, key):
-        try:
-            type_ = self._Accessor__iobj[key]
-        except KeyError:
-           raise
+    
+    @staticmethod
+    def list_traverser(klsobj, first_path="obj"):
+        if not isinstance(klsobj, Accessor):
+            raise ValueError("First argument should be of `Accessor` instance type")
         
-        if isinstance(type_, collections.MutableSequence):
-            return Accessor([Accessor(item) 
-                             for item in self._Accessor__iobj[key]])
-        return Accessor(self._Accessor__iobj[key])
+        if not first_path.startswith("obj"):
+            raise Exception("first_path should be started with `obj`")
+
+        res = []
+        for item in klsobj:
+            obj = item
+            res.append(eval(first_path))           
+        return Accessor(res)
 
 
 if __name__ == '__main__':
