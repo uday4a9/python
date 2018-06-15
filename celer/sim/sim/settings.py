@@ -127,15 +127,15 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 
-#from celery.schedules import crontab
-#from datetime import timedelta
+from celery.schedules import crontab
+from datetime import timedelta
 
-#app.conf.beat_schedule = {
-##    'add-every-minute-contrab': {
-##        'task': 'add',
-##        'schedule': crontab(),
-##        'args': (16, 16),
-##    },
+CELERYBEAT_SCHEDULE = {
+    'add-every-minute-contrab': {
+        'task': 'add',
+        'schedule': crontab(),
+        'args': (16, 16),
+    },
 #    'add-every-5-seconds': {
 #        'task': 'add',
 #        'schedule': 5.0,
@@ -143,14 +143,14 @@ CELERY_TIMEZONE = TIME_ZONE
 #    },
 #    'add-every-30-seconds': {
 #        'task': 'add',
-#        'schedule': 30.0,
+#        'schedule': '30.0',
 #        'args': (11, 11)
 #    },
-#    'add-every-15-seconds': {
-#        'task': 'add',
-#        'schedule': timedelta(15),
-#        'args': (13, 13)
-#    },
-#}
+    'add-every-15-seconds': {
+        'task': 'add',
+        'schedule': timedelta(seconds=15),
+        'args': (13, 13)
+    }
+}
 
 
