@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "disable_existing_loggers": false,
+
+    "formatters": { 
+			"standard": { 
+				"format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+			}
+    },
+
+    "handlers": { 
+			"info_handler": { 
+				"level": "INFO",
+				"formatter": "standard",
+				"class": "logging.FileHandler",
+				"filename": "file_info.log"
+			},
+			"error_handler": { 
+				"level": "ERROR",
+				"formatter": "standard",
+				"class": "logging.FileHandler",
+				"filename": "file_error.log"
+			}
+    },
+
+    "loggers": {
+			"multiple" : {
+				"level": "INFO",
+				"handlers": ["info_handler", "error_handler"],
+				"propagate": true
+			 }
+    }
+}
